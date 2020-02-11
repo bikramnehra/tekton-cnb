@@ -1,0 +1,41 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: example-run
+  namespace: build
+spec:
+  serviceAccountName: docker-creds-sa
+  taskRef:
+    name: buildpacks-v3
+# Uncomment the lines below to use an existing cache
+#  podTemplate:
+#    volumes:
+#    - name: my-cache
+#      persistentVolumeClaim:
+#        claimName: task-pv-claim
+  inputs:
+    resources:
+    - name: source
+      resourceSpec:
+        type: git
+        params:
+        - name: url
+          value: https://github.com/cloudfoundry-samples/test-app.git
+        - name: revision
+          value: master
+    params:
+    - name: BUILDER_IMAGE
+      value: cloudfoundry/cnb:bionic
+    - name: USE_CRED_HELPERS
+      value: "false"
+# Uncomment the lines below to use an existing cache
+#    - name: CACHE
+#      value: my-cache
+  outputs:
+    resources:
+    - name: image
+      resourceSpec:
+        type: image
+        params:
+        - name: url
+          value: docker.io/bikramnehra/test-app:latest
