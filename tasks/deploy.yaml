@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: deploy
+spec:
+  inputs:
+    params:
+      - name: API_ENDPOINT
+  steps:
+    - name: install-cf
+      image: ubuntu
+      command: ["/bin/sh"]
+      args:
+        - "-c"
+        - >
+          apt-get -y update &&
+          apt-get -y install curl &&
+          curl https://s3-us-west-1.amazonaws.com/cf-cli-releases/releases/v6.49.0/cf-cli_6.49.0_linux_x86-64.tgz --output cf-cli.tgz &&
+          tar -xvf cf-cli.tgz &&
+          mv cf /usr/bin &&
+          chmod +x /usr/bin/cf &&
+          cf version &&
+          cf api --skip-ssl-validation https://api.192.168.39.44.xip.io

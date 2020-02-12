@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
-  name: example-run
+  name: build-run
   namespace: build
 spec:
   serviceAccountName: docker-creds-sa

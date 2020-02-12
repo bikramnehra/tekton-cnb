@@ -47,7 +47,6 @@ spec:
       args:
         - "-c"
         - >
-          cat ~/.docker/config.json &&
           chown -R "$(inputs.params.USER_ID):$(inputs.params.GROUP_ID)" "/tekton/home" &&
           chown -R "$(inputs.params.USER_ID):$(inputs.params.GROUP_ID)" "/layers" &&
           chown -R "$(inputs.params.USER_ID):$(inputs.params.GROUP_ID)" "/cache" &&

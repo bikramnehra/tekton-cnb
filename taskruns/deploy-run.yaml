@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: deploy-run
+spec:
+  taskRef:
+    name: deploy
+  inputs:
+    params:
+    - name: API_ENDPOINT
+      value: "$(inputs.params.API_ENDPOINT)"
