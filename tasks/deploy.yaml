@@ -6,18 +6,30 @@ spec:
   inputs:
     params:
       - name: API_ENDPOINT
+        description: The CF API endpoint.
+      - name: CF_USER
+        description: The CF user.
+      - name: CF_PASS
+        description: CF user's pass.
+      - name: CF_ORG
+        description: CF org.
+      - name: CF_SPACE
+        description: CF space.
+      - name: APP_IMAGE
+        description: The app image to be deployed.
   steps:
     - name: install-cf
-      image: ubuntu
+      image: bikramnehra/base-ci:tekton-cnb
       command: ["/bin/sh"]
       args:
         - "-c"
         - >
-          apt-get -y update &&
-          apt-get -y install curl &&
-          curl https://s3-us-west-1.amazonaws.com/cf-cli-releases/releases/v6.49.0/cf-cli_6.49.0_linux_x86-64.tgz --output cf-cli.tgz &&
-          tar -xvf cf-cli.tgz &&
-          mv cf /usr/bin &&
-          chmod +x /usr/bin/cf &&
           cf version &&
-          cf api --skip-ssl-validation https://api.192.168.39.44.xip.io
+          cf api --skip-ssl-validation $(inputs.params.API_ENDPOINT) &&
+          cf auth $(inputs.params.CF_USER) $(inputs.params.CF_PASS) &&
+          cf create-org $(inputs.params.CF_ORG) &&
+          cf target -o $(inputs.params.CF_ORG) &&
+          cf create-space $(inputs.params.CF_SPACE) &&
+          cf target -o $(inputs.params.CF_ORG) -s $(inputs.params.CF_SPACE) &&
+          cf enable-feature-flag diego_docker &&
+          cf push test-app --docker-image  $(inputs.params.APP_IMAGE)

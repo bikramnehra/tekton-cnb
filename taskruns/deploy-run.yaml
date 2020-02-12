@@ -8,4 +8,14 @@ spec:
   inputs:
     params:
     - name: API_ENDPOINT
-      value: "$(inputs.params.API_ENDPOINT)"
+      value: "<cf-api-endpoint>"
+    - name: CF_USER
+      value: "admin"
+    - name: CF_PASS
+      value: "<cf-pass>"
+    - name: CF_ORG
+      value: "test-org"
+    - name: CF_SPACE
+      value: "test-space"
+    - name: APP_IMAGE
+      value: "docker.io/bikramnehra/test-app:latest"
