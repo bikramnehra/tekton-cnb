@@ -18,7 +18,7 @@ spec:
       - name: APP_IMAGE
         description: The app image to be deployed.
   steps:
-    - name: install-cf
+    - name: deploy-app
       image: bikramnehra/base-ci:tekton-cnb
       command: ["/bin/sh"]
       args:
