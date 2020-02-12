@@ -2,6 +2,7 @@ apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
   name: deploy-run
+  namespace: deploy
 spec:
   taskRef:
     name: deploy
