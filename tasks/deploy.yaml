@@ -18,7 +18,7 @@ spec:
       - name: APP_IMAGE
         description: The app image to be deployed.
   steps:
-    - name: bootstrap-cf
+    - name: deploy-app
       image: bikramnehra/base-ci:tekton-cnb
       command: ["/bin/sh"]
       args:
@@ -31,11 +31,5 @@ spec:
           cf target -o $(inputs.params.CF_ORG) &&
           cf create-space $(inputs.params.CF_SPACE) &&
           cf target -o $(inputs.params.CF_ORG) -s $(inputs.params.CF_SPACE) &&
-          cf enable-feature-flag diego_docker
-    
-    - name: deploy-app
-      image: bikramnehra/base-ci:tekton-cnb
-      args:
-        - "-c"
-        - >
+          cf enable-feature-flag diego_docker &&
           cf push test-app --docker-image  $(inputs.params.APP_IMAGE)
